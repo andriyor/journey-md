@@ -3,7 +3,7 @@
 const fs = require("fs");
 
 const cheerio = require('cheerio');
-const playwright = require('playwright-chromium');
+const playwright = require('playwright');
 
 (async () => {
   const browser = await playwright.chromium.launch({headless: false });
@@ -23,9 +23,9 @@ const playwright = require('playwright-chromium');
   
   const LOAD_MORE_SELECTOR = '#cardFooterLoaded button';
   await page.click(LOAD_MORE_SELECTOR);
-  await page.waitFor(5000);
+  await page.waitForTimeout(5000);
   const CLOSE_MODAL_SELECTOR = '.sellModal .close';
-  await page.waitFor(CLOSE_MODAL_SELECTOR);
+  await page.waitForSelector(CLOSE_MODAL_SELECTOR);
   await page.click(CLOSE_MODAL_SELECTOR);
   
   async function parse() {
@@ -49,7 +49,7 @@ const playwright = require('playwright-chromium');
     if (loadMoreButton) {
       await loadMoreButton.scrollIntoViewIfNeeded();
       await page.click(LOAD_MORE_SELECTOR);
-      await page.waitFor(10000);
+      await page.waitForTimeout(10000);
       try {
         await loadMore();
       } catch (e) {
